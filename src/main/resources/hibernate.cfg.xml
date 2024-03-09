@@ -1,0 +1,39 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">com.p6spy.engine.spy.P6SpyDriver</property>
+        <property name="connection.url">jdbc:p6spy:mysql://localhost:3306/movie</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">root</property>
+        <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <!-- Specify session context -->
+        <property name="current_session_context_class">thread</property>
+        <!-- Echo all executed SQL to stdout -->
+        <property name="hibernate.show_sql">true</property>
+        <!-- Update database schema when changes are detected -->
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+
+        <!-- Specify annotated entity classes-->
+        <mapping class="org.javarush.domain.entity.Actor"/>
+        <mapping class="org.javarush.domain.entity.Address"/>
+        <mapping class="org.javarush.domain.entity.Category"/>
+        <mapping class="org.javarush.domain.entity.City"/>
+        <mapping class="org.javarush.domain.entity.Country"/>
+        <mapping class="org.javarush.domain.entity.Customer"/>
+        <mapping class="org.javarush.domain.entity.Feature"/>
+        <mapping class="org.javarush.domain.entity.Film"/>
+        <mapping class="org.javarush.domain.entity.FilmText"/>
+        <mapping class="org.javarush.domain.entity.Inventory"/>
+        <mapping class="org.javarush.domain.entity.Language"/>
+        <mapping class="org.javarush.domain.entity.Payment"/>
+        <mapping class="org.javarush.domain.entity.Rating"/>
+        <mapping class="org.javarush.domain.entity.Rental"/>
+        <mapping class="org.javarush.domain.entity.Staff"/>
+        <mapping class="org.javarush.domain.entity.Store"/>
+
+    </session-factory>
+</hibernate-configuration>
