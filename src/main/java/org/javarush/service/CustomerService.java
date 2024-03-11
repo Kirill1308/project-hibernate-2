@@ -1,6 +1,6 @@
 package org.javarush.service;
 
-import lombok.AllArgsConstructor;
+import org.javarush.app.AppConfig;
 import org.javarush.dao.AddressDAO;
 import org.javarush.dao.CityDAO;
 import org.javarush.dao.CustomerDAO;
@@ -10,12 +10,12 @@ import org.javarush.domain.entity.City;
 import org.javarush.domain.entity.Customer;
 import org.javarush.domain.entity.Store;
 
-@AllArgsConstructor
 public class CustomerService {
-    private final StoreDAO storeDAO;
-    private final CityDAO cityDAO;
-    private final AddressDAO addressDAO;
-    private final CustomerDAO customerDAO;
+    private final AppConfig appConfig = AppConfig.getInstance();
+    private final StoreDAO storeDAO = appConfig.getDAO(StoreDAO.class);
+    private final CityDAO cityDAO = appConfig.getDAO(CityDAO.class);
+    private final AddressDAO addressDAO = appConfig.getDAO(AddressDAO.class);
+    private final CustomerDAO customerDAO = appConfig.getDAO(CustomerDAO.class);
 
     public Address createAddress() {
         City city = cityDAO.getByName("Kragujevac");

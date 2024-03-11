@@ -1,6 +1,6 @@
 package org.javarush.service;
 
-import lombok.AllArgsConstructor;
+import org.javarush.app.AppConfig;
 import org.javarush.dao.ActorDAO;
 import org.javarush.dao.CategoryDAO;
 import org.javarush.dao.FilmDAO;
@@ -20,13 +20,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@AllArgsConstructor
 public class FilmService {
-    private final FilmDAO filmDAO;
-    private final FilmTextDAO filmTextDAO;
-    private final ActorDAO actorDAO;
-    private final LanguageDAO languageDAO;
-    private final CategoryDAO categoryDAO;
+    private final AppConfig appConfig = AppConfig.getInstance();
+    private final FilmDAO filmDAO = appConfig.getDAO(FilmDAO.class);
+    private final FilmTextDAO filmTextDAO = appConfig.getDAO(FilmTextDAO.class);
+    private final ActorDAO actorDAO = appConfig.getDAO(ActorDAO.class);
+    private final LanguageDAO languageDAO = appConfig.getDAO(LanguageDAO.class);
+    private final CategoryDAO categoryDAO = appConfig.getDAO(CategoryDAO.class);
 
     public Film createNewFilm() {
         Language language = languageDAO.getItems(0, 20).stream().unordered().findAny().get();

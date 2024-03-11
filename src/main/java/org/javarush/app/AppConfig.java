@@ -3,6 +3,12 @@ package org.javarush.app;
 import lombok.Getter;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.javarush.command.Command;
+import org.javarush.command.CommandType;
+import org.javarush.command.CreateCustomerCommand;
+import org.javarush.command.CreateFilmCommand;
+import org.javarush.command.ProcessCustomerRentingCommand;
+import org.javarush.command.ProcessRentalReturnCommand;
 import org.javarush.dao.ActorDAO;
 import org.javarush.dao.AddressDAO;
 import org.javarush.dao.CategoryDAO;
@@ -20,12 +26,26 @@ import org.javarush.dao.StaffDAO;
 import org.javarush.dao.StoreDAO;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Objects.isNull;
 
 public class AppConfig {
     @Getter
+    private static final Map<CommandType, Command> commands = new EnumMap<>(CommandType.class);
+    private static AppConfig instance;
+    @Getter
     private final SessionFactory sessionFactory;
     private final List<GenericDAO<?>> daoInstances;
+
+    static {
+        commands.put(CommandType.CREATE_FILM, new CreateFilmCommand());
+        commands.put(CommandType.RENT_INVENTORY, new ProcessCustomerRentingCommand());
+        commands.put(CommandType.RETURN_INVENTORY, new ProcessRentalReturnCommand());
+        commands.put(CommandType.CREATE_CUSTOMER, new CreateCustomerCommand());
+    }
 
     public AppConfig() {
         sessionFactory = new Configuration().configure().buildSessionFactory();
@@ -59,5 +79,21 @@ public class AppConfig {
                 .filter(dao -> daoClass.isAssignableFrom(dao.getClass()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("DAO not found for class: " + daoClass));
+    }
+
+    public static Command getCommand(String commandString) {
+        CommandType commandType = CommandType.valueOf(commandString.toUpperCase());
+        Command command = commands.get(commandType);
+        if (isNull(command)) {
+            throw new IllegalArgumentException("Invalid Command: " + commandString);
+        }
+        return command;
+    }
+
+    public static AppConfig getInstance() {
+        if (instance == null) {
+            instance = new AppConfig();
+        }
+        return instance;
     }
 }

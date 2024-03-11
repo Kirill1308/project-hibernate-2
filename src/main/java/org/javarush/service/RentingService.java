@@ -1,5 +1,6 @@
 package org.javarush.service;
 
+import org.javarush.app.AppConfig;
 import org.javarush.dao.FilmDAO;
 import org.javarush.dao.InventoryDAO;
 import org.javarush.dao.PaymentDAO;
@@ -17,20 +18,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class RentingService {
-    private final FilmDAO filmDAO;
-    private final StoreDAO storeDAO;
-    private final InventoryDAO inventoryDAO;
-    private final RentalDAO rentalDAO;
-    private final PaymentDAO paymentDAO;
-
-    public RentingService(FilmDAO filmDAO, StoreDAO storeDAO, InventoryDAO inventoryDAO,
-                          RentalDAO rentalDAO, PaymentDAO paymentDAO) {
-        this.filmDAO = filmDAO;
-        this.storeDAO = storeDAO;
-        this.inventoryDAO = inventoryDAO;
-        this.rentalDAO = rentalDAO;
-        this.paymentDAO = paymentDAO;
-    }
+    private final AppConfig appConfig = AppConfig.getInstance();
+    private final FilmDAO filmDAO = appConfig.getDAO(FilmDAO.class);
+    private final StoreDAO storeDAO = appConfig.getDAO(StoreDAO.class);
+    private final InventoryDAO inventoryDAO = appConfig.getDAO(InventoryDAO.class);
+    private final RentalDAO rentalDAO = appConfig.getDAO(RentalDAO.class);
+    private final PaymentDAO paymentDAO = appConfig.getDAO(PaymentDAO.class);
 
     public Inventory createInventory() {
         Film film = filmDAO.getFirstAvailableFilm();
